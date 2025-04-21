@@ -5,8 +5,7 @@ import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import Image from "next/image";
-import data from "./data.json";
+import { BsStars } from "react-icons/bs";
 export default function Home() {
   return (
     <SidebarProvider>
@@ -14,13 +13,21 @@ export default function Home() {
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
+          <div className="@container/main flex flex-1 flex-col gap-2 overflow-scroll pb-12">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards />
-              <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
+              <div className=" flex items-center justify-center flex-col w-full fixed bottom-0 bg-white dark:bg-zinc-950 rounded-b-lg">
+                <div className="w-full max-w-4xl relative border rounded-lg my-2">
+                  <input
+                    type="text"
+                    placeholder="Ask anything"
+                    className="w-full py-4 px-2 dark:bg-slate-950 bg-slate-100 rounded-lg"
+                  />
+                  <Button className="absolute right-2 bottom-2 cursor-pointer">
+                    Ask <BsStars />
+                  </Button>
+                </div>
               </div>
-              <DataTable data={data} />
             </div>
           </div>
         </div>
