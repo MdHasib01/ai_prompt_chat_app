@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { generatePrompt } from "../../../app/GeneratePrompt";
+import { AppDispatch } from "@/store/store";
 type Message = {
   id: string | number;
   type: "user" | "bot";
@@ -7,21 +8,26 @@ type Message = {
   loading?: boolean;
 };
 
+type History = {
+  type: "user" | "bot";
+  text: string;
+};
 interface ChatState {
   messages: Message[];
+  history: History[];
 }
 
 const initialState: ChatState = {
   messages: [],
+  history: [],
 };
-
-export const fetchBotResponse = createAsyncThunk<string, string>(
-  "chat/fetchBotResponse",
-  async (userInput) => {
-    const botResponse = await generatePrompt(userInput);
-    return botResponse;
-  }
-);
+export const fetchBotResponse = createAsyncThunk<
+  string,
+  { userInput: string; dispatch: AppDispatch; history: History[] }
+>("chat/fetchBotResponse", async ({ userInput, dispatch, history }) => {
+  const botResponse = await generatePrompt(userInput, dispatch, history);
+  return botResponse;
+});
 export const chatSlice = createSlice({
   name: "chat",
   initialState,
@@ -51,6 +57,9 @@ export const chatSlice = createSlice({
         };
       }
     },
+    addHistory: (state, action: PayloadAction<History>) => {
+      state.history.push(action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBotResponse.fulfilled, (state, action) => {
@@ -62,7 +71,7 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { addUserMessage, addBotTyping, updateBotMessage } =
+export const { addUserMessage, addBotTyping, updateBotMessage, addHistory } =
   chatSlice.actions;
 
 export default chatSlice.reducer;

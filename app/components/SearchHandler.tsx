@@ -14,8 +14,7 @@ import {
 import { AppDispatch } from "@/store/store";
 
 const SearchHandler = () => {
-  const { messages } = useAppSelector((state) => state.chats);
-
+  const { history } = useAppSelector((state) => state.chats);
   const dispatch = useDispatch<AppDispatch>();
   const { state, isMobile } = useSidebar();
   const [input, setInput] = useState<string>("");
@@ -24,8 +23,9 @@ const SearchHandler = () => {
     if (!input.trim()) return;
     dispatch(addUserMessage(input));
     dispatch(addBotTyping());
-    dispatch(fetchBotResponse(input));
+    dispatch(fetchBotResponse({ userInput: input, dispatch, history }));
     setInput("");
+    console.log(history);
   };
   return (
     <div

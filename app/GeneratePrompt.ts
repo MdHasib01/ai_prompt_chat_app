@@ -1,5 +1,7 @@
 "use client";
 
+import { addHistory } from "@/store/features/prompt/promptSlice";
+import { AppDispatch } from "@/store/store";
 import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({
@@ -25,16 +27,23 @@ You: Nice choice! There’s a lot of interest in those areas right now. Do you h
 User: Beginners mostly.
 You: Perfect! Teaching beginners can be really rewarding. Would you like help planning your first few posts or choosing a blogging platform?
 `;
+type History = {
+  type: "user" | "bot";
+  text: string;
+};
 
-export async function generatePrompt(userPrompt: string): Promise<string> {
+export async function generatePrompt(
+  userPrompt: string,
+  dispatch: AppDispatch,
+  history: History[]
+): Promise<string> {
   const result = await ai.models.generateContent({
     model: "gemini-2.0-flash",
-    contents: [{ text: SYSTEM_PROMPT }, { text: userPrompt }],
+    contents: [{ text: SYSTEM_PROMPT }, ...history, { text: userPrompt }],
   });
-
   const text =
     result.candidates?.[0]?.content?.parts?.[0]?.text || "No response found";
-
   console.log("Gemini says:", text);
+  dispatch(addHistory({ type: "user", text: userPrompt }));
   return text;
 }
