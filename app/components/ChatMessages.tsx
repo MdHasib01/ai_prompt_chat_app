@@ -54,7 +54,7 @@ const ChatMessages: React.FC = () => {
               }`}
             >
               {msg.type === "bot" ? (
-                <div className="prose prose-sm max-w-none">
+                <div className="prose prose-sm max-w-none my-2">
                   <ReactMarkdown>{displayText}</ReactMarkdown>
                 </div>
               ) : (
