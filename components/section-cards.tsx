@@ -1,9 +1,9 @@
+"use client";
 import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { WiStars } from "react-icons/wi";
 import { Button } from "./ui/button";
+import { useSelector } from "react-redux";
 const promptCards = [
   {
     id: 1,
@@ -46,9 +47,27 @@ const promptCards = [
   },
 ];
 
-export function SectionCards() {
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * SectionCards
+ *
+ * This component renders a section of cards with a title and description.
+ * The cards are generated from the `promptCards` array, and each card
+ * displays a category, title, description, and a button to generate
+ * a prompt. The component also renders a list of all prompts and
+ * their corresponding responses.
+ *
+ * @returns {JSX.Element}
+ */
+/*******  fcf33832-9749-4442-880d-6ae2a79fb0e4  *******/ export function SectionCards() {
+  const { messages } = useSelector((state: any) => state.chats);
+
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+    <div
+      className={`*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 ${
+        messages !== null && messages.length !== 0 ? "hidden" : ""
+      }`}
+    >
       {promptCards.map((card) => (
         <Card className="@container/card relative" key={card.id}>
           <CardHeader>

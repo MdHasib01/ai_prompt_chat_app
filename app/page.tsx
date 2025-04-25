@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 import { BsStars } from "react-icons/bs";
 import SearchHandler from "./components/SearchHandler";
+import ChatMessages from "./components/ChatMessages";
 export default function Home() {
   const state: string = "open";
   return (
@@ -24,6 +25,7 @@ export default function Home() {
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards />
 
+              <ChatMessages />
               <SearchHandler />
             </div>
           </div>
